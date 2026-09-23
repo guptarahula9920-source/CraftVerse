@@ -70,11 +70,11 @@
 <body>
 <!-- ================= HEADER ================= -->
 <header>
-    <h1>CraftVerse <span>(Admin Panel ??)</span></h1>
+    <h1>CraftVerse <span>(Admin Panel)</span></h1>
     <nav>
-        <a href="index.html">?? View Store</a>
+        <a href="index.html">&#127968; View Store</a>
         <a href="products.html">Products</a>
-        <a href="seller.html">????? Seller Portal</a>
+        <a href="seller.html">&#128717; Seller Portal</a>
         <a href="admin.html" class="active">Dashboard</a>
         <a href="#" onclick="logoutUser(event)">Logout</a>
     </nav>
@@ -87,30 +87,30 @@
     <!-- ADMIN STATISTICS (CLICKABLE CARDS) -->
     <div class="admin-stats">
         <div class="admin-card" onclick="scrollToSection('productsSection')" title="Click to view Products Inventory">
-            <div class="admin-icon">??</div>
+            <div class="admin-icon">&#128230;</div>
             <h3>Total Products</h3>
             <p class="admin-number" id="statTotalProducts">...</p>
-            <small style="color: var(--muted); font-size: 12px;">? Click to view</small>
+            <small style="color: var(--muted); font-size: 12px;">Click to view</small>
         </div>
         <div class="admin-card" onclick="scrollToSection('ordersSection')" title="Click to view Customer Orders">
-            <div class="admin-icon">??</div>
+            <div class="admin-icon">&#128203;</div>
             <h3>Total Orders</h3>
             <p class="admin-number" id="statTotalOrders">...</p>
-            <small style="color: var(--muted); font-size: 12px;">? Click to view</small>
+            <small style="color: var(--muted); font-size: 12px;">Click to view</small>
         </div>
         <div class="admin-card" onclick="scrollToSection('customersSection')" title="Click to view Registered Customers">
-            <div class="admin-icon">??</div>
+            <div class="admin-icon">&#128101;</div>
             <h3>Total Customers</h3>
             <p class="admin-number" id="statTotalCustomers">...</p>
-            <small style="color: var(--muted); font-size: 12px;">? Click to view</small>
+            <small style="color: var(--muted); font-size: 12px;">Click to view</small>
         </div>
     </div>
 
     <!-- RECENT ORDERS MANAGEMENT -->
     <div class="admin-actions" id="ordersSection" style="margin-top: 45px; scroll-margin-top: 80px; padding: 20px; background: rgba(255,255,255,0.4); border-radius: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
-            <h2 style="text-align: left; margin: 0;">?? Customer Orders (MySQL Live)</h2>
-            <button type="button" class="btn" onclick="fetchAdminData()" style="font-size: 13px; padding: 6px 14px;">?? Refresh Orders</button>
+            <h2 style="text-align: left; margin: 0;">Customer Orders (MySQL Live)</h2>
+            <button type="button" class="btn" onclick="fetchAdminData()" style="font-size: 13px; padding: 6px 14px;">&#128260; Refresh Orders</button>
         </div>
         <div style="overflow-x: auto;">
             <table class="admin-table">
@@ -126,7 +126,7 @@
                     </tr>
                 </thead>
                 <tbody id="adminOrdersTable">
-                    <tr><td colspan="7" style="text-align:center; padding: 20px;">? Loading orders from MySQL...</td></tr>
+                    <tr><td colspan="7" style="text-align:center; padding: 20px;">Loading orders from MySQL...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -135,8 +135,8 @@
     <!-- PRODUCT MANAGEMENT -->
     <div class="admin-actions" id="productsSection" style="margin-top: 45px; scroll-margin-top: 80px; padding: 20px; background: rgba(255,255,255,0.4); border-radius: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
-            <h2 style="margin: 0; text-align: left;">?? Product Inventory (MySQL Live)</h2>
-            <button type="button" class="btn" onclick="openAddProductModal()">? Add New Product</button>
+            <h2 style="margin: 0; text-align: left;">Product Inventory (MySQL Live)</h2>
+            <button type="button" class="btn" onclick="openAddProductModal()">&#43; Add New Product</button>
         </div>
 
         <div style="overflow-x: auto;">
@@ -153,7 +153,7 @@
                     </tr>
                 </thead>
                 <tbody id="adminProductsTable">
-                    <tr><td colspan="7" style="text-align:center; padding: 20px;">? Loading products from MySQL...</td></tr>
+                    <tr><td colspan="7" style="text-align:center; padding: 20px;">Loading products from MySQL...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -161,7 +161,7 @@
 
     <!-- REGISTERED CUSTOMERS MANAGEMENT (NEW SECTION) -->
     <div class="admin-actions" id="customersSection" style="margin-top: 45px; scroll-margin-top: 80px; padding: 20px; background: rgba(255,255,255,0.4); border-radius: 12px; margin-bottom: 40px;">
-        <h2 style="text-align: left; margin-bottom: 20px;">?? Registered Customers & Users (MySQL Live)</h2>
+        <h2 style="text-align: left; margin-bottom: 20px;">Registered Customers &amp; Users (MySQL Live)</h2>
         <div style="overflow-x: auto;">
             <table class="admin-table">
                 <thead>
@@ -175,7 +175,7 @@
                     </tr>
                 </thead>
                 <tbody id="adminCustomersTable">
-                    <tr><td colspan="6" style="text-align:center; padding: 20px;">? Loading customers from MySQL...</td></tr>
+                    <tr><td colspan="6" style="text-align:center; padding: 20px;">Loading customers from MySQL...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -204,7 +204,7 @@
                 </select>
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
-                <label>Price (?)</label>
+                <label>Price (&#8377;)</label>
                 <input type="number" id="newProdPrice" placeholder="e.g. 450" required min="1" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
@@ -233,7 +233,7 @@
 </div>
 
 <footer>
-    <p>© 2026 CraftVerse Admin Dashboard. All Rights Reserved.</p>
+    <p>&copy; 2026 CraftVerse Admin Dashboard. All Rights Reserved.</p>
 </footer>
 
 <!-- Toast Notification -->
@@ -250,11 +250,11 @@
     function checkAdminAuth() {
         const user = JSON.parse(localStorage.getItem("craftverse_user"));
         if (!user || user.role !== "admin") {
-            alert("?? Access Denied: Admin access required! Please login with an admin account.");
+            alert("Access Denied: Admin access required! Please login with an admin account.");
             window.location.href = "admin-login.html";
             return false;
         }
-        document.getElementById("adminWelcomeMsg").textContent = `Welcome, ${user.name} (${user.email}) - CraftVerse Control Room ??`;
+        document.getElementById("adminWelcomeMsg").textContent = `Welcome, ${user.name} (${user.email}) - CraftVerse Control Room`;
         return true;
     }
 
@@ -295,7 +295,7 @@
             renderDashboard();
         } catch (error) {
             console.error("Admin Fetch Error:", error);
-            showToast("? Error connecting to MySQL server!");
+            showToast("Error connecting to MySQL server!");
         }
     }
 
@@ -319,7 +319,7 @@
                         <small style="color: var(--muted);">${o.email || ''}</small>
                     </td>
                     <td>${o.phone}</td>
-                    <td><strong>?${o.total || o.totalAmount}</strong></td>
+                    <td><strong>&#8377;${o.total || o.totalAmount}</strong></td>
                     <td><small>${o.paymentMethod || 'COD'}</small></td>
                     <td>
                         <select onchange="updateOrderStatus('${o.id || o.order_id}', this.value)" style="padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border); font-weight: bold; background: #fff;">
@@ -330,7 +330,7 @@
                         </select>
                     </td>
                     <td>
-                        <button type="button" class="btn" onclick="openOrderModal(${idx})" style="padding: 4px 10px; font-size: 12px; background: var(--brown);">??? View Details</button>
+                        <button type="button" class="btn" onclick="openOrderModal(${idx})" style="padding: 4px 10px; font-size: 12px; background: var(--brown);">View Details</button>
                     </td>
                 </tr>
             `).join("");
@@ -347,10 +347,10 @@
                     <td><img src="${p.image || 'images/vase.jpg'}" alt="${p.name}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;"></td>
                     <td><strong>${p.name}</strong></td>
                     <td>${p.category || 'Craft'}</td>
-                    <td>?${p.price}</td>
-                    <td>${p.inStock ? '? Yes' : '? Out'}</td>
+                    <td>&#8377;${p.price}</td>
+                    <td>${p.inStock ? 'Yes' : 'Out of Stock'}</td>
                     <td>
-                        <button type="button" onclick="deleteAdminProduct(${p.product_id})" style="background: none; border: none; cursor: pointer; color: #d33; font-size: 14px; font-weight: bold;">??? Delete</button>
+                        <button type="button" onclick="deleteAdminProduct(${p.product_id})" style="background: none; border: none; cursor: pointer; color: #d33; font-size: 14px; font-weight: bold;">Delete</button>
                     </td>
                 </tr>
             `).join("");
@@ -392,16 +392,16 @@
 
             const data = await res.json();
             if (data.success) {
-                showToast("?? Product added successfully to MySQL!");
+                showToast("Product added successfully to MySQL!");
                 closeAddProductModal();
                 document.getElementById("addProductForm").reset();
                 fetchAdminData();
             } else {
-                showToast(`? ${data.message}`);
+                showToast(`${data.message}`);
             }
         } catch (error) {
             console.error("Save product error:", error);
-            showToast("? Could not save product!");
+            showToast("Could not save product!");
         }
     }
 
@@ -413,14 +413,14 @@
             const res = await fetch(`/api/products/${productId}`, { method: "DELETE" });
             const data = await res.json();
             if (data.success) {
-                showToast("??? Product deleted from MySQL!");
+                showToast("Product deleted from MySQL!");
                 fetchAdminData();
             } else {
-                showToast(`? ${data.message}`);
+                showToast(`${data.message}`);
             }
         } catch (error) {
             console.error("Delete error:", error);
-            showToast("? Error deleting product!");
+            showToast("Error deleting product!");
         }
     }
 
@@ -435,14 +435,14 @@
 
             const data = await res.json();
             if (data.success) {
-                showToast(`Order #CV-${String(orderId).padStart(4, '0')} updated to ${newStatus}! ??`);
+                showToast(`Order #CV-${String(orderId).padStart(4, '0')} updated to ${newStatus}!`);
                 fetchAdminData();
             } else {
-                showToast(`? ${data.message}`);
+                showToast(`${data.message}`);
             }
         } catch (error) {
             console.error("Status update error:", error);
-            showToast("? Error updating status!");
+            showToast("Error updating status!");
         }
     }
 
@@ -458,9 +458,9 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee;">
                     <div>
                         <strong>${item.name}</strong><br>
-                        <small style="color: var(--muted);">Qty: ${item.quantity || 1} × ?${item.price}</small>
+                        <small style="color: var(--muted);">Qty: ${item.quantity || 1} x &#8377;${item.price}</small>
                     </div>
-                    <strong>?${(item.price * (item.quantity || 1))}</strong>
+                    <strong>&#8377;${(item.price * (item.quantity || 1))}</strong>
                 </div>
             `).join("")
             : `<p style="color: var(--muted); font-style: italic;">No individual item details available.</p>`;
@@ -482,7 +482,7 @@
             </div>
 
             <div style="text-align: right; font-size: 16px;">
-                <strong>Grand Total: <span style="color: var(--dark-brown); font-size: 20px;">?${order.total || order.totalAmount}</span></strong>
+                <strong>Grand Total: <span style="color: var(--dark-brown); font-size: 20px;">&#8377;${order.total || order.totalAmount}</span></strong>
             </div>
         `;
 

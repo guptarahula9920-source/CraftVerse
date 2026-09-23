@@ -62,9 +62,9 @@
 <body>
 <!-- ================= HEADER ================= -->
 <header>
-    <h1>CraftVerse <span>(Artisan / Seller Portal ?????)</span></h1>
+    <h1>CraftVerse <span>(Artisan / Seller Portal)</span></h1>
     <nav>
-        <a href="index.html">?? View Store</a>
+        <a href="index.html">&#127968; View Store</a>
         <a href="products.html">Products</a>
         <a href="seller.html" class="active">Seller Dashboard</a>
         <a href="#" onclick="logoutUser(event)">Logout</a>
@@ -78,27 +78,27 @@
     <!-- SELLER STATS -->
     <div class="admin-stats">
         <div class="seller-card">
-            <div class="admin-icon">??</div>
+            <div class="admin-icon">&#128230;</div>
             <h3>My Crafts Listed</h3>
             <p class="admin-number" id="statSellerProducts">0</p>
         </div>
         <div class="seller-card">
-            <div class="admin-icon">??</div>
+            <div class="admin-icon">&#128203;</div>
             <h3>Total Orders with My Crafts</h3>
             <p class="admin-number" id="statSellerOrders">0</p>
         </div>
         <div class="seller-card">
-            <div class="admin-icon">??</div>
+            <div class="admin-icon">&#128176;</div>
             <h3>Estimated Revenue</h3>
-            <p class="admin-number" id="statSellerRevenue">?0</p>
+            <p class="admin-number" id="statSellerRevenue">&#8377;0</p>
         </div>
     </div>
 
     <!-- SELLER PRODUCTS -->
     <div class="admin-actions" style="margin-top: 40px; padding: 20px; background: rgba(255,255,255,0.4); border-radius: 12px;">
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 20px;">
-            <h2 style="margin: 0; text-align: left;">?? My Listed Handmade Crafts</h2>
-            <button type="button" class="btn" onclick="openAddModal()">? Add New Craft</button>
+            <h2 style="margin: 0; text-align: left;">My Listed Handmade Crafts</h2>
+            <button type="button" class="btn" onclick="openAddModal()">&#43; Add New Craft</button>
         </div>
 
         <div style="overflow-x: auto;">
@@ -113,7 +113,7 @@
                     </tr>
                 </thead>
                 <tbody id="sellerProductsTable">
-                    <tr><td colspan="5" style="text-align:center; padding: 20px;">? Loading your crafts...</td></tr>
+                    <tr><td colspan="5" style="text-align:center; padding: 20px;">Loading your crafts...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -121,7 +121,7 @@
 
     <!-- SELLER RELEVANT ORDERS -->
     <div class="admin-actions" style="margin-top: 45px; padding: 20px; background: rgba(255,255,255,0.4); border-radius: 12px; margin-bottom: 40px;">
-        <h2 style="text-align: left; margin-bottom: 20px;">?? Recent Sales & Orders</h2>
+        <h2 style="text-align: left; margin-bottom: 20px;">Recent Sales &amp; Orders</h2>
         <div style="overflow-x: auto;">
             <table class="seller-table">
                 <thead>
@@ -134,7 +134,7 @@
                     </tr>
                 </thead>
                 <tbody id="sellerOrdersTable">
-                    <tr><td colspan="5" style="text-align:center; padding: 20px;">? Loading orders...</td></tr>
+                    <tr><td colspan="5" style="text-align:center; padding: 20px;">Loading orders...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -163,7 +163,7 @@
                 </select>
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
-                <label>Price (?)</label>
+                <label>Price (&#8377;)</label>
                 <input type="number" id="sellerProdPrice" placeholder="e.g. 500" required min="1" style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
             </div>
             <div class="form-group" style="margin-bottom: 12px;">
@@ -179,7 +179,7 @@
 </div>
 
 <footer>
-    <p>© 2026 CraftVerse Artisan Portal. All Rights Reserved.</p>
+    <p>&copy; 2026 CraftVerse Artisan Portal. All Rights Reserved.</p>
 </footer>
 
 <!-- Toast Notification -->
@@ -194,11 +194,11 @@
     function checkSellerAuth() {
         currentUser = JSON.parse(localStorage.getItem("craftverse_user"));
         if (!currentUser || (currentUser.role !== "seller" && currentUser.role !== "admin")) {
-            alert("?? Access Denied: Seller or Admin access required!");
+            alert("Access Denied: Seller or Admin access required!");
             window.location.href = "login.html";
             return false;
         }
-        document.getElementById("sellerWelcomeMsg").textContent = `Welcome Artisan, ${currentUser.name} (${currentUser.email}) ?`;
+        document.getElementById("sellerWelcomeMsg").textContent = `Welcome Artisan, ${currentUser.name} (${currentUser.email})`;
         return true;
     }
 
@@ -234,7 +234,7 @@
             renderSellerView();
         } catch (e) {
             console.error(e);
-            showToast("? Could not load seller data");
+            showToast("Could not load seller data");
         }
     }
 
@@ -254,7 +254,7 @@
                 });
             }
         });
-        document.getElementById("statSellerRevenue").textContent = `?${totalRev}`;
+        document.getElementById("statSellerRevenue").textContent = `â‚¹${totalRev}`;
 
         // Products Table
         const prodTbody = document.getElementById("sellerProductsTable");
@@ -266,9 +266,9 @@
                     <td><img src="${p.image || 'images/vase.jpg'}" alt="${p.name}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;"></td>
                     <td><strong>${p.name}</strong></td>
                     <td>${p.category || 'Craft'}</td>
-                    <td>?${p.price}</td>
+                    <td>&#8377;${p.price}</td>
                     <td>
-                        <button type="button" onclick="deleteSellerProduct(${p.product_id})" style="background: none; border: none; cursor: pointer; color: #d33; font-size: 14px; font-weight: bold;">??? Remove</button>
+                        <button type="button" onclick="deleteSellerProduct(${p.product_id})" style="background: none; border: none; cursor: pointer; color: #d33; font-size: 14px; font-weight: bold;">Remove</button>
                     </td>
                 </tr>
             `).join("");
@@ -283,7 +283,7 @@
                 <tr>
                     <td><strong>#CV-${String(o.id || o.order_id).padStart(4, '0')}</strong></td>
                     <td>${o.customer}</td>
-                    <td>${(o.items || []).map(i => `${i.name} (×${i.quantity || 1})`).join(", ")}</td>
+                    <td>${(o.items || []).map(i => `${i.name} (Qty: ${i.quantity || 1})`).join(", ")}</td>
                     <td><span style="background: #e2f0d9; color: #274e13; padding: 3px 8px; border-radius: 8px; font-size: 12px; font-weight: bold;">${o.status}</span></td>
                     <td>${o.orderDate ? new Date(o.orderDate).toLocaleDateString("en-GB") : 'Recently'}</td>
                 </tr>
@@ -308,15 +308,15 @@
             });
             const data = await res.json();
             if (data.success) {
-                showToast("?? Craft listed successfully on CraftVerse!");
+                showToast("Craft listed successfully on CraftVerse!");
                 closeAddModal();
                 document.getElementById("addSellerProdForm").reset();
                 loadSellerData();
             } else {
-                showToast(`? ${data.message}`);
+                showToast(`${data.message}`);
             }
         } catch (e) {
-            showToast("? Error saving craft");
+            showToast("Error saving craft");
         }
     }
 
@@ -330,7 +330,7 @@
                 loadSellerData();
             }
         } catch (e) {
-            showToast("? Error deleting craft");
+            showToast("Error deleting craft");
         }
     }
 

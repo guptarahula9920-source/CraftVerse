@@ -393,16 +393,16 @@ app.post("/api/orders", (req, res) => {
                     subject: `CraftVerse - Order Confirmation #${formattedOrderId}`,
                     html: `
                         <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; border: 1px solid #c9a583; border-radius: 8px;">
-                            <h2 style="color: #4b2d1c;">Thank you for your order, ${customer}! ???</h2>
+                            <h2 style="color: #4b2d1c;">Thank you for your order, ${customer}!</h2>
                             <p>Your CraftVerse handmade order has been placed successfully.</p>
                             <hr style="border: 0; border-top: 1px solid #eee;">
                             <p><strong>Order ID:</strong> ${formattedOrderId}</p>
-                            <p><strong>Total Amount:</strong> ?${totalAmount}</p>
+                            <p><strong>Total Amount:</strong> &#8377;${totalAmount}</p>
                             <p><strong>Payment Method:</strong> ${paymentMethod}</p>
                             <p><strong>Status:</strong> Placed</p>
                             <p><strong>Delivery Address:</strong><br>${address}</p>
                             <hr style="border: 0; border-top: 1px solid #eee;">
-                            <p>Thank you for supporting authentic artisans! ?????</p>
+                            <p>Thank you for supporting authentic artisans!</p>
                             <p style="font-size: 13px; color: #888;">CraftVerse Marketplace</p>
                         </div>
                     `
@@ -423,10 +423,10 @@ app.post("/api/orders", (req, res) => {
                 const adminMailOptions = {
                     from: process.env.EMAIL_USER,
                     to: adminEmail,
-                    subject: `?? [CraftVerse Alert] New Order Placed: #${formattedOrderId}`,
+                    subject: `[CraftVerse Alert] New Order Placed: #${formattedOrderId}`,
                     html: `
                         <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; border: 2px solid #b8754b; border-radius: 8px;">
-                            <h2 style="color: #b8754b; margin-top: 0;">New Order Received! ??</h2>
+                            <h2 style="color: #b8754b; margin-top: 0;">New Order Received!</h2>
                             <p>A customer has just placed an order on CraftVerse:</p>
                             <hr style="border: 0; border-top: 1px solid #ddd;">
                             <p><strong>Order ID:</strong> ${formattedOrderId}</p>
@@ -435,7 +435,7 @@ app.post("/api/orders", (req, res) => {
                             <p><strong>Mobile Number:</strong> ${phone}</p>
                             <p><strong>Delivery Address:</strong><br>${address}</p>
                             <p><strong>Payment Method:</strong> ${paymentMethod}</p>
-                            <p><strong>Total Amount:</strong> <span style="font-size: 18px; color: #4b2d1c; font-weight: bold;">?${totalAmount}</span></p>
+                            <p><strong>Total Amount:</strong> <span style="font-size: 18px; color: #4b2d1c; font-weight: bold;">&#8377;${totalAmount}</span></p>
                             <hr style="border: 0; border-top: 1px solid #ddd;">
                             <p>Log in to your <strong>Admin Dashboard</strong> to manage and ship this order.</p>
                         </div>
