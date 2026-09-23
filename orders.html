@@ -121,7 +121,7 @@
                     ? `/api/orders?email=${encodeURIComponent(user.email)}`
                     : "/api/orders";
 
-                const orderResponse = await fetch(apiUrl);
+                const orderResponse = await authenticatedFetch(apiUrl);
                 const orderData = await orderResponse.json();
 
                 if (!orderData.success) {

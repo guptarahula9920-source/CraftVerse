@@ -123,12 +123,8 @@
 
                 if (data.success) {
                     // Auto-login newly registered user
-                    localStorage.setItem("craftverse_user", JSON.stringify({
-                        name: fullname,
-                        email: email,
-                        phone: phone,
-                        address: ""
-                    }));
+                    localStorage.setItem("craftverse_user", JSON.stringify(data.user));
+                    localStorage.setItem("craftverse_token", data.token);
 
                     showToast("🎉 Account created successfully! Welcome to CraftVerse.");
 

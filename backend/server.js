@@ -4,9 +4,16 @@ const express = require("express");
 const path = require("path");
 const db = require("./db");
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || "craftverse-development-secret";
+
+if (process.env.NODE_ENV === "production" && !process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET must be set in production");
+}
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -18,6 +25,46 @@ const transporter = nodemailer.createTransport({
 });
 
 app.use(express.json());
+
+function createAuthToken(user) {
+    return jwt.sign(
+        {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role || "customer"
+        },
+        JWT_SECRET,
+        { expiresIn: "7d" }
+    );
+}
+
+function requireAuth(req, res, next) {
+    const authorization = req.headers.authorization || "";
+    const token = authorization.startsWith("Bearer ")
+        ? authorization.slice(7)
+        : "";
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: "Authentication required" });
+    }
+
+    try {
+        req.user = jwt.verify(token, JWT_SECRET);
+        next();
+    } catch (error) {
+        return res.status(401).json({ success: false, message: "Invalid or expired authentication token" });
+    }
+}
+
+function requireRole(...roles) {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({ success: false, message: "Insufficient permissions" });
+        }
+        next();
+    };
+}
 
 // Frontend static folder access
 app.use(express.static(path.join(__dirname, "../")));
@@ -31,12 +78,12 @@ app.get("/", (req, res) => {
 // ==========================================
 
 // Login API
-app.post("/api/login", (req, res) => {
+app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
 
-    const sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+    const sql = "SELECT * FROM users WHERE email = ?";
 
-    db.query(sql, [email, password], (err, results) => {
+    db.query(sql, [email], async (err, results) => {
         if (err) {
             return res.status(500).json({
                 success: false,
@@ -52,13 +99,34 @@ app.post("/api/login", (req, res) => {
         }
 
         const user = results[0];
+        const passwordMatches = await bcrypt.compare(password, user.password).catch(() => false);
+
+        if (!passwordMatches && user.password !== password) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid Email or Password"
+            });
+        }
+
+        if (!passwordMatches) {
+            const hashedPassword = await bcrypt.hash(password, 12);
+            db.query("UPDATE users SET password = ? WHERE id = ?", [hashedPassword, user.id]);
+        }
+
+        const userForToken = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role || "customer"
+        };
 
         res.json({
             success: true,
             message: "Login successful",
+            token: createAuthToken(userForToken),
             user: {
-                id: user.user_id || user.id,
-                user_id: user.user_id || user.id,
+                id: user.id,
+                user_id: user.id,
                 name: user.name,
                 email: user.email,
                 phone: user.phone || "",
@@ -75,7 +143,7 @@ app.post("/api/register", (req, res) => {
 
     const checkSql = "SELECT * FROM users WHERE email = ?";
 
-    db.query(checkSql, [email], (err, results) => {
+    db.query(checkSql, [email], async (err, results) => {
         if (err) {
             return res.status(500).json({
                 success: false,
@@ -97,9 +165,11 @@ app.post("/api/register", (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?)
         `;
 
+        const hashedPassword = await bcrypt.hash(password, 12);
+
         db.query(
             insertSql,
-            [name, email, password, phone || "", address || "", userRole],
+            [name, email, hashedPassword, phone || "", address || "", userRole],
             (err, result) => {
                 if (err) {
                     return res.status(500).json({
@@ -108,11 +178,22 @@ app.post("/api/register", (req, res) => {
                     });
                 }
 
+                const user = { id: result.insertId, name, email, role: userRole };
                 res.json({
                     success: true,
                     message: "Registration successful",
                     userId: result.insertId,
-                    role: userRole
+                    role: userRole,
+                    token: createAuthToken(user),
+                    user: {
+                        id: result.insertId,
+                        user_id: result.insertId,
+                        name,
+                        email,
+                        phone: phone || "",
+                        address: address || "",
+                        role: userRole
+                    }
                 });
             }
         );
@@ -166,7 +247,7 @@ app.get("/api/products/:id", (req, res) => {
 });
 
 // Add new product (Admin or Seller)
-app.post("/api/products", (req, res) => {
+app.post("/api/products", requireAuth, requireRole("admin", "seller"), (req, res) => {
     const { name, description, price, category, image, inStock, seller_id } = req.body;
 
     if (!name || !price) {
@@ -187,7 +268,7 @@ app.post("/api/products", (req, res) => {
             category || "Craft",
             image || "images/vase.jpg",
             inStock !== undefined ? inStock : 1,
-            seller_id || null
+            req.user.role === "seller" ? req.user.id : (seller_id || null)
         ],
         (err, result) => {
             if (err) {
@@ -205,10 +286,15 @@ app.post("/api/products", (req, res) => {
 });
 
 // Delete product
-app.delete("/api/products/:id", (req, res) => {
-    const sql = "DELETE FROM products WHERE product_id = ?";
+app.delete("/api/products/:id", requireAuth, requireRole("admin", "seller"), (req, res) => {
+    const sql = req.user.role === "seller"
+        ? "DELETE FROM products WHERE product_id = ? AND seller_id = ?"
+        : "DELETE FROM products WHERE product_id = ?";
+    const params = req.user.role === "seller"
+        ? [req.params.id, req.user.id]
+        : [req.params.id];
 
-    db.query(sql, [req.params.id], (err, result) => {
+    db.query(sql, params, (err, result) => {
         if (err) {
             return res.status(500).json({ success: false, message: "Could not delete product" });
         }
@@ -221,8 +307,12 @@ app.delete("/api/products/:id", (req, res) => {
 // ==========================================
 
 // Get orders with items (Supports filtering by ?email=...)
-app.get("/api/orders", (req, res) => {
+app.get("/api/orders", requireAuth, (req, res) => {
     const { email } = req.query;
+
+    if (req.user.role === "customer" && email && email.toLowerCase() !== req.user.email.toLowerCase()) {
+        return res.status(403).json({ success: false, message: "You can only view your own orders" });
+    }
 
     let ordersSql = "SELECT * FROM orders ORDER BY order_id DESC";
     let params = [];
@@ -297,7 +387,7 @@ app.get("/api/orders", (req, res) => {
 });
 
 // Update Order Status (Admin only)
-app.put("/api/orders/:id/status", (req, res) => {
+app.put("/api/orders/:id/status", requireAuth, requireRole("admin"), (req, res) => {
     const { status } = req.body;
     const allowedStatuses = ["Placed", "Shipped", "Delivered", "Cancelled"];
 
@@ -508,7 +598,7 @@ app.post("/api/order-items", (req, res) => {
 // ==========================================
 
 // Get all users
-app.get("/api/users", (req, res) => {
+app.get("/api/users", requireAuth, requireRole("admin"), (req, res) => {
     const sql = "SELECT id AS user_id, name, email, phone, address, role, created_at FROM users ORDER BY id DESC";
 
     db.query(sql, (err, results) => {
@@ -520,7 +610,7 @@ app.get("/api/users", (req, res) => {
 });
 
 // Update user role
-app.put("/api/users/:id/role", (req, res) => {
+app.put("/api/users/:id/role", requireAuth, requireRole("admin"), (req, res) => {
     const { role } = req.body;
     if (!["admin", "seller", "customer"].includes(role)) {
         return res.status(400).json({ success: false, message: "Invalid role" });

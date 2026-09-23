@@ -11,6 +11,21 @@ function saveCart(cart) {
     updateCartCount();
 }
 
+function getAuthToken() {
+    return localStorage.getItem("craftverse_token") || "";
+}
+
+function authenticatedFetch(url, options = {}) {
+    const headers = new Headers(options.headers || {});
+    const token = getAuthToken();
+
+    if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
+
+    return fetch(url, { ...options, headers });
+}
+
 // Update Cart Count in Navbar
 function updateCartCount() {
     const countElements = document.querySelectorAll(".cart-count-badge");
@@ -86,6 +101,7 @@ function logoutUser(e) {
     if (e) e.preventDefault();
     localStorage.removeItem("craftverse_user");
     localStorage.removeItem("craftverse_token");
+    localStorage.removeItem("craftverse_admin_logged");
     showToast("Logged out successfully! 👋");
     setTimeout(() => {
         window.location.href = "index.html";

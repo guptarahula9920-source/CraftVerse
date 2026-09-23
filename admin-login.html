@@ -90,6 +90,7 @@
                 }
 
                 localStorage.setItem("craftverse_user", JSON.stringify(data.user));
+                localStorage.setItem("craftverse_token", data.token);
                 localStorage.setItem("craftverse_admin_logged", "true");
 
                 showToast(`Welcome Admin ${data.user.name}! Redirecting... 🚀`);

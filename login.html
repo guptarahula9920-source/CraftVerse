@@ -105,6 +105,7 @@
 
         if (data.success) {
             localStorage.setItem("craftverse_user", JSON.stringify(data.user));
+            localStorage.setItem("craftverse_token", data.token);
 
             showToast(`Welcome back, ${data.user.name}! 🎉`);
 

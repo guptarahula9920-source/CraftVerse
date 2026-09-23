@@ -207,14 +207,14 @@
             const sellerId = currentUser.user_id || currentUser.id || "";
 
             // 1. Fetch Products for this seller
-            const prodRes = await fetch(`/api/products?seller_id=${sellerId}`);
+            const prodRes = await authenticatedFetch(`/api/products?seller_id=${sellerId}`);
             const prodData = await prodRes.json();
             if (prodData.success) {
                 myProducts = prodData.products || [];
             }
 
             // 2. Fetch Orders
-            const orderRes = await fetch("/api/orders");
+            const orderRes = await authenticatedFetch("/api/orders");
             const orderData = await orderRes.json();
             if (orderData.success) {
                 const allOrders = orderData.orders || [];
@@ -301,7 +301,7 @@
         const seller_id = currentUser.user_id || currentUser.id || null;
 
         try {
-            const res = await fetch("/api/products", {
+            const res = await authenticatedFetch("/api/products", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, description, category, price, image, seller_id })
@@ -323,7 +323,7 @@
     async function deleteSellerProduct(prodId) {
         if (!confirm(`Are you sure you want to remove Craft #${prodId}?`)) return;
         try {
-            const res = await fetch(`/api/products/${prodId}`, { method: "DELETE" });
+            const res = await authenticatedFetch(`/api/products/${prodId}`, { method: "DELETE" });
             const data = await res.json();
             if (data.success) {
                 showToast("Craft removed successfully!");
